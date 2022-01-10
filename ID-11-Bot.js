@@ -60,7 +60,28 @@ client.on("messageCreate", async message => {
     const m = await message.channel.send("Ping?");
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
   }
-  if(command === "last") {
+
+  ///lastpost embed
+  if(command === "lastpost") {
+    let postID = await sf.getHotPosts();
+    let postTitle = await sf.getPostData("Title", postID[2]);
+    let postBody = await sf.getPostData("Body",postID[2]);
+    let postURL = await sf.getPostData("URL", postID[2]);
+    let postAuthor = await sf.getPostData("Author", postID[2]);
+    let postIcon = await sf.getPostData("AuthorIcon", postID[2]);
+    //message.channel.send(postTitle);
+    const embed = new Discord.MessageEmbed()
+     .setColor(0xFF0000)
+     .setURL(postURL)
+     .setAuthor(postAuthor.name, postIcon)
+     .setTitle(postTitle)
+     .setDescription(postBody.slice(0,4096));
+     message.channel.send({ embeds: [embed] });
+  };
+
+
+  ///Story and Setting embed
+  if(command === "setting") {
     let postID = await sf.getHotPosts();
     let postTitle = await sf.getPostData("Title", postID[0]);
     let postBody = await sf.getPostData("Body",postID[0]);
@@ -74,6 +95,24 @@ client.on("messageCreate", async message => {
      .setAuthor(postAuthor.name, postIcon)
      .setTitle(postTitle)
      .setDescription(postBody.slice(0,4096));
+     message.channel.send({ embeds: [embed] });
+  };
+
+  /////episode embed
+  if(command === "episode") {
+    let postID = await sf.getHotPosts();
+    let postTitle = await sf.getPostData("Title", postID[1]);
+    let postBody = await sf.getPostData("Body",postID[1]);
+    let postURL = await sf.getPostData("URL", postID[1]);
+    let postAuthor = await sf.getPostData("Author", postID[1]);
+    let postIcon = await sf.getPostData("AuthorIcon", postID[1]);
+    //message.channel.send(postTitle);
+    const embed = new Discord.MessageEmbed()
+     .setColor(0xF1C232)
+     .setURL(postURL)
+     .setAuthor(postAuthor.name, postIcon)
+     .setTitle(postTitle)
+     .setDescription(postBody.slice(0,4096))
      message.channel.send({ embeds: [embed] });
   };
 });
