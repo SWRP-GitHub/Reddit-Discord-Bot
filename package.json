@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "discord.js": "^13.5.1",
+    "fs": "^0.0.1-security",
+    "nodemon": "^2.0.15",
+    "snoowrap": "^1.23.0",
+    "xml2json": "^0.12.0"
+  }
+}
