@@ -3,8 +3,8 @@ const Discord = require("discord.js");
 const sf = require('./sharedFunctions.js');
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_INTEGRATIONS"]});
 const config = require("./config/config.json");
-const ruleFile = "placeholder.txt"
 const discordConfig = config.discordCreds;
+
 
 client.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
@@ -40,6 +40,7 @@ client.on("messageCreate", async message => {
 
   ///lastpost embed
   if(command === "lastpost") {
+    
     let postID = await sf.getHotPosts("content");
     let postTitle = await sf.getPostData("Title", postID[2]);
     let postBody = await sf.getPostData("Body",postID[2]);
@@ -52,7 +53,7 @@ client.on("messageCreate", async message => {
      .setAuthor(postAuthor.name, postIcon)
      .setTitle(postTitle)
      .setDescription(postBody.slice(0,1000)+'.....\n   |CONTINUE READING ON REDDIT|')
-     .setFooter(`[IG-88-Bot]: Brought to you by Malgus`)
+     .setFooter(`[IG-88-Bot]: Brought to you by SWRP-Media`)
      .setTimestamp()
      .setImage("https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png")
      message.channel.send({ embeds: [embed] });
@@ -73,7 +74,7 @@ client.on("messageCreate", async message => {
      .setAuthor(postAuthor.name, postIcon)
      .setTitle(postTitle)
      .setDescription(postBody.slice(0,1000)+'.....\n   |CONTINUE READING ON REDDIT|')
-     .setFooter(`[IG-88-Bot]: Brought to you by Malgus`)
+     .setFooter(`[IG-88-Bot]: Brought to you by SWRP-Media`)
      .setTimestamp()
      .setImage("https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png")
      message.channel.send({ embeds: [embed] });
@@ -94,7 +95,7 @@ client.on("messageCreate", async message => {
      .setAuthor(postAuthor.name, postIcon)
      .setTitle(postTitle)
      .setDescription(postBody.slice(0,1000)+'.....\n  |CONTINUE READING ON REDDIT|')
-     .setFooter(`[IG-88-Bot]: Brought to you by Malgus`)
+     .setFooter(`[IG-88-Bot]: Brought to you by SWRP-Media`)
      .setTimestamp()
      
      message.channel.send({ embeds: [embed] });
@@ -118,11 +119,6 @@ client.on("messageCreate", async message => {
     message.channel.send('**New Posts:** \n===================== ')
     for(i in titles){
       let postBodys = await sf.getPostData("Body",postIDs[i]);
-      //console.log(postBodys)
-     // let postURLs = await sf.getPostData("URL", postIDs[i]);
-      //console.log(postURLs)
-     // let authors = await sf.getPostData("Author", postIDs[i]);
-     // let postIcons = await sf.getPostData("AuthorIcon", postIDs[i]);
       const embed = new Discord.MessageEmbed()
       .setColor(0x3F5061)
       .setImage("https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png")
@@ -130,12 +126,9 @@ client.on("messageCreate", async message => {
       .setAuthor(authors[i],postIcons[i])
       .setTitle(titles[i])
       .setDescription(postBodys.slice(0,1000) + ".....\n |CONTINUE READING ON REDDIT|")
-      .setFooter(`[IG-88-Bot]: Brought to you by Malgus`)
+      .setFooter(`[IG-88-Bot]: Brought to you by SWRP-Media`)
       .setTimestamp()
       message.channel.send({ embeds: [embed] });
-     
-     
-      //message.channel.send(`**${i}:** ` + titles[i] + "\n" + '**Author**: ' + authors[i] + '\n'+`**PostID**: ${postIDs[i]} ` +`\n **PostURL: ${postURLs[i]}**`)
     }
   }
 });
