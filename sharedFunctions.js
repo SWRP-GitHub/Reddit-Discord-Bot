@@ -74,6 +74,11 @@ async function getPostData(segment, postID) {
 
 ////gets the new posts
 async function getNewPosts(type) {
+    if (type === 'postID') {
+        let promise = r.getNew('Starwarsrp').map(RedditContent => RedditContent.id)
+        let result = await promise
+        return result
+    }
     if (type === 'title') {
         let promise = r.getNew('Starwarsrp').map(RedditContent => RedditContent.title)
         let result = await promise;
@@ -176,7 +181,6 @@ async function getRecentComments(subreddit, setting, limit) {
     }
 
 }
-
 
 module.exports = {
     getHotPosts,
