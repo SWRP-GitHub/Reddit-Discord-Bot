@@ -55,7 +55,7 @@ client.on("messageCreate", async message => {
       .setAuthor(postAuthor.name, postIcon)
       .setTitle(postTitle)
       .setDescription(postBody.slice(0, 1000) + '.....\n   |CONTINUE READING ON REDDIT|')
-      .setFooter(`[IG-88-Bot]: Brought to you by SWRP-Media`)
+      .setFooter(`[SWRP-Media-Bot]: Brought to you by SWRP-Media`)
       .setTimestamp()
       .setImage("https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png")
     message.channel.send({
@@ -78,7 +78,7 @@ client.on("messageCreate", async message => {
       .setAuthor(postAuthor.name, postIcon)
       .setTitle(postTitle)
       .setDescription(postBody.slice(0, 1000) + '.....\n   |CONTINUE READING ON REDDIT|')
-      .setFooter(`[IG-88-Bot]: Brought to you by SWRP-Media`)
+      .setFooter(`[SWRP-Media-Bot]: Brought to you by SWRP-Media`)
       .setTimestamp()
       .setImage("https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png")
     message.channel.send({
@@ -101,7 +101,7 @@ client.on("messageCreate", async message => {
       .setAuthor(postAuthor.name, postIcon)
       .setTitle(postTitle)
       .setDescription(postBody.slice(0, 1000) + '.....\n  |CONTINUE READING ON REDDIT|')
-      .setFooter(`[IG-88-Bot]: Brought to you by SWRP-Media`)
+      .setFooter(`[SWRP-Media-Bot]: Brought to you by SWRP-Media`)
       .setTimestamp()
 
     message.channel.send({
@@ -134,7 +134,7 @@ client.on("messageCreate", async message => {
         .setAuthor(authors[i], postIcons[i])
         .setTitle(titles[i])
         .setDescription(postBodys.slice(0, 1000) + ".....\n |CONTINUE READING ON REDDIT|")
-        .setFooter(`[IG-88-Bot]: Brought to you by SWRP-Media`)
+        .setFooter(`[SWRP-Media-Bot]: Brought to you by SWRP-Media`)
         .setTimestamp()
       message.channel.send({
         embeds: [embed]
@@ -159,7 +159,7 @@ client.on("messageCreate", async message => {
         .setURL(posturl)
         .setAuthor(author, icon)
         .setTitle("New Comments have arrived...")
-        .setDescription("-=-=-=-=-=-=-=-=-=-=-=-=-\n" + body + "\n-=-=-=-=-=-=-=-=-=-=-=-=-")
+        .setDescription(`-=-=-=-=-=-=-=-=-=-=-=-=-\n + ${body} + \n-=-=-=-=-=-=-=-=-=-=-=-=-`)
         .setFooter(`[SWRP-Media-Bot]: Brought to you by SWRP-Media`)
         .setTimestamp()
         .setThumbnail("https://i.kym-cdn.com/entries/icons/original/000/011/121/SKULL_TRUMPET_0-1_screenshot.png")
@@ -195,17 +195,26 @@ client.on("messageCreate", async message => {
       let posturl = await sf.getPostData("URL", parentID)
       let icon = await sf.getRecentComments(commentID, 'icon', 1);
       let body = await sf.getRecentComments(commentID, 'body', 1);
-
+      //formatting body and adding properties to the embed
+      let bodyProc = `-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n  ${body}  \n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-`
+      let rptIssue = 'https://github.com/SWRP-GitHub/Reddit-Discord-Bot/issues/new'
+      let footer = '[SWRP-Media-Bot]: Brought to you by SWRP-Media | '
+      let issueLink = `[GitHub-Issues](${rptIssue})`
+      let embedTitle = "New Comments have arrived..."
+      let redditURL = 'https://old.reddit.com/r/Starwarsrp/comments/'
+      let redditBannerURL = "https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png"
+      let dootpng = "https://i.kym-cdn.com/entries/icons/original/000/011/121/SKULL_TRUMPET_0-1_screenshot.png"
+      //the embed
       const embed = new Discord.MessageEmbed()
-        .setColor(0x3F5061)
-        .setImage("https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png")
-        .setURL('https://old.reddit.com/r/Starwarsrp/comments/')
+        .setColor(0xCC0000)
+        .setImage(redditBannerURL)
+        .setURL(redditURL)
         .setAuthor(author, icon)
-        .setTitle("New Comments have arrived...")
-        .setDescription("-=-=-=-=-=-=-=-=-=-=-=-=-\n" + body + "\n-=-=-=-=-=-=-=-=-=-=-=-=-")
-        .setFooter(`[SWRP-Media-Bot]: Brought to you by SWRP-Media`)
-        .setTimestamp()
-        .setThumbnail("https://i.kym-cdn.com/entries/icons/original/000/011/121/SKULL_TRUMPET_0-1_screenshot.png")
+        .setTitle(embedTitle)
+        .setDescription(bodyProc)
+        .setFooter(footer)
+          .setTimestamp()
+        .setThumbnail(dootpng)
         .addFields({
           name: "Author of Comment: ",
           value: author,
@@ -224,8 +233,6 @@ client.on("messageCreate", async message => {
       });
     };
   };
-
-
 });
 
 client.login(discordConfig.token);
