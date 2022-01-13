@@ -23,4 +23,5 @@ Uses a bot for discord and a reddit Oauth App linked to Reddit User "SWRP-Media-
 - /story = Will grab the Setting and Story post
 - /episode1 = Will grab the First Episode post
 - /episode2 = Will grab the Second Episode post
-- /galaxymap= Will grab the galaxy map
+- /galaxymap = Will grab the galaxy map
+- /commands = Will grab the list of bot commands
