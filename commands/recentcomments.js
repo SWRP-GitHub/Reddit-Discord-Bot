@@ -51,9 +51,8 @@ module.exports = {
                 inline: true,
               }
             );
-          message.channel.send({
-            embeds: [embed],
-          });
+            message.channel.send("<---- **Check the bot-lobby for result**")
+            message.guild.channels.cache.find(channel => channel.name === "bot-lobby").send({embeds: [embed]})
         }
       } catch (e) {
         //ERROR COMMAND HERE
