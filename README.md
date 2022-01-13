@@ -15,7 +15,7 @@ Ask Almighty Malgus for any config files or create your own accordingly for loca
 
 Uses a bot for discord and a reddit Oauth App linked to Reddit User "SWRP-Media-Bot"
 
-#Commands:
+# Commands:
 - /recentpost = Will grab the most recently submitted post
 - /recentposts = Will grab the 3 most recently submitted posts, from newest --> oldest
 - /recentcomment = Will grab the most recently submitted comment in the subreddit
