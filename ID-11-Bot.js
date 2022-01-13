@@ -1,34 +1,67 @@
-// Load up the discord.js library
+/////////////SWRP Media Bot/////////////////////
+// Created by: Almighty_Malgus
+// Art Assets by: Maskar
+// Reddit Data by: The SWRP Comunity
+// Version: 1.0.2
+// Features:
+//  - Can connect to a Discord to send messages and take commands
+//  - Connects to the Reddit API to retrive post/comment data
+
+/////////////Import Libraries
 const Discord = require("discord.js");
 const sf = require("./sharedFunctions.js");
+const fs = require("fs");
 const client = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_INTEGRATIONS"],
 });
 const config = require("./config/config.json");
 const discordConfig = config.discordCreds;
 
+/////////////Bot Starts Here//////////////////
 client.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
   console.log(`SWRP-Media-Bot is online.`);
-  client.user.setActivity(`Doin your mom, yea we strait doin your mom`);
+  client.user.setActivity(
+    `for cmds. Type /commands to pull SWRP-Media-Bots Command List`,
+    { type: "WATCHING" }
+  );
 });
 
-client.on("guildCreate", guild => {
+client.on("guildCreate", (guild) => {
   // This event triggers when the bot joins a guild.
   console.log(
     `New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`
   );
-  client.user.setActivity(`Serving ${client.guilds.size} servers`);
+  client.user.setActivity(
+    `for cmds. Type /commands to pull SWRP-Media-Bots Command List`,
+    { type: "WATCHING" }
+  );
 });
 
-client.on("guildDelete", guild => {
+client.on("guildDelete", (guild) => {
   // this event triggers when the bot is removed from a guild.
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-  client.user.setActivity(`Serving ${client.guilds.size} servers`);
+  client.user.setActivity(
+    `for cmds. Type /commands to pull SWRP-Media-Bots Command List`,
+    { type: "WATCHING" }
+  );
 });
 
-client.on("messageCreate", async message => {
-  // This event will run on every single message received, from any channel or DM.
+//////////////////////Command File Handler//////////////////////////////
+client.commands = new Discord.Collection();
+
+const commandFiles = fs
+  .readdirSync("./commands/")
+  .filter((file) => file.endsWith(".js"));
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+
+  client.commands.set(command.name, command);
+}
+
+///////////////////////// Message Listener/////////////////////////////
+// Will fire off on any message received by every user in every channel
+client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
   if (message.content.indexOf(discordConfig.prefix) !== 0) return;
   const args = message.content
@@ -37,124 +70,9 @@ client.on("messageCreate", async message => {
     .split(/ +/g);
   const command = args.shift().toLowerCase();
 
-  //Commands
-  if (command === "ping") {
-    const m = await message.channel.send("Ping?");
-    m.edit(
-      `Pong! Latency is ${m.createdTimestamp -
-        message.createdTimestamp}ms. API Latency is ${Math.round(
-        client.ping
-      )}ms`
-    );
-  }
-
-  ///lastpost embed
-  if (command === "recentpost") {
-    let postID = await sf.getNewPostsV2("Starwarsrp", "postid");
-    let postTitle = await sf.getPostData("Title", postID[0]);
-    let postBody = await sf.getPostData("Body", postID[0]);
-    let postURL = await sf.getPostData("URL", postID[0]);
-    let postAuthor = await sf.getPostData("Author", postID[0]);
-    let postIcon = await sf.getPostData("AuthorIcon", postID[0]);
-    const embed = new Discord.MessageEmbed()
-      .setColor(0xff0000)
-      .setURL(postURL)
-      .setAuthor(postAuthor.name, postIcon)
-      .setTitle(postTitle + "...")
-      .setDescription(
-        postBody.slice(0, 1000) +
-          `.....\n [CONTINUE READING ON REDDIT](${postURL})`
-      )
-      .setFooter(`[SWRP-Media-Bot]`)
-      .setTimestamp()
-      .setImage(
-        "https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png"
-      );
-    message.channel.send({
-      embeds: [embed],
-    });
-  }
-
-  ///Story and Setting embed
-  if (command === "story") {
-    let postID = "k3qac1";
-    let postTitle = await sf.getPostData("Title", postID);
-    let postBody = await sf.getPostData("Body", postID);
-    let postURL = await sf.getPostData("URL", postID);
-    let postAuthor = await sf.getPostData("Author", postID);
-    let postIcon = await sf.getPostData("AuthorIcon", postID);
-    const embed = new Discord.MessageEmbed()
-      .setColor(0x3498db)
-      .setURL(postURL)
-      .setAuthor(postAuthor.name, postIcon)
-      .setTitle(postTitle)
-      .setDescription(
-        postBody.slice(0, 1012) + `\n [CONTINUE READING ON REDDIT](${postURL})`
-      )
-      .setFooter(`[SWRP-Media-Bot]`)
-      .setTimestamp()
-      .setImage(
-        "https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png"
-      );
-    message.channel.send({
-      embeds: [embed],
-    });
-  }
-
-  /////episode embed
-  if (command === "episode1") {
-    let postID = "kk712u";
-    let postTitle = await sf.getPostData("Title", postID);
-    let postBody = await sf.getPostData("Body", postID);
-    let postURL = await sf.getPostData("URL", postID);
-    let postAuthor = await sf.getPostData("Author", postID);
-    let postIcon = await sf.getPostData("AuthorIcon", postID);
-    const embed = new Discord.MessageEmbed()
-      .setColor(0x8f39c4)
-      .setImage(
-        "https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png"
-      )
-      .setURL(postURL)
-      .setAuthor(postAuthor.name, postIcon)
-      .setTitle(postTitle)
-      .setDescription(
-        postBody.slice(0, 1000) +
-          `.....\n [CONTINUE READING ON REDDIT](${postURL})`
-      )
-      .setFooter(`[SWRP-Media-Bot]`)
-      .setTimestamp();
-
-    message.channel.send({
-      embeds: [embed],
-    });
-  }
-  if (command === "episode2") {
-    let postID = "ryj0ww";
-    let postTitle = await sf.getPostData("Title", postID);
-    let postBody = await sf.getPostData("Body", postID);
-    let postURL = await sf.getPostData("URL", postID);
-    let postAuthor = await sf.getPostData("Author", postID);
-    let postIcon = await sf.getPostData("AuthorIcon", postID);
-    const embed = new Discord.MessageEmbed()
-      .setColor(0x8f39c4)
-      .setImage(
-        "https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png"
-      )
-      .setURL(postURL)
-      .setAuthor(postAuthor.name, postIcon)
-      .setTitle(postTitle)
-      .setDescription(
-        postBody.slice(0, 1000) +
-          `.....\n [CONTINUE READING ON REDDIT](${postURL})`
-      )
-      .setFooter(`[SWRP-Media-Bot]`)
-      .setTimestamp();
-
-    message.channel.send({
-      embeds: [embed],
-    });
-  }
-  //New testing
+  /////////////////////CMD TESTING//////////////////////
+  //New command to test
+  //Once its proved to work here, migrate it to a stand alone JS file and move it to the /commands/ directory
   if (command === "getnewpostlistDNU") {
     let postTitle = await sf.getNewPosts("title");
     let postURL = await sf.getNewPosts("url");
@@ -163,176 +81,60 @@ client.on("messageCreate", async message => {
       message.channel.send(`**${i}:** ` + postTitle[i] + "\n" + postURL[i]);
     }
   }
+  ////////////////////End of CMD Testing/////////////////
 
+  /////////////////////Commands////////////////////////
+  if (command === "ping") {
+    client.commands.get("ping").execute(message, args);
+  }
+
+  ///Story and Setting Embed
+  if (command === "story") {
+    client.commands.get("story").execute(message, args);
+  }
+
+  ///Episode 1 Embed
+  if (command === "episode1") {
+    client.commands.get("episode1").execute(message, args);
+  }
+
+  ///Episode 2 Embed
+  if (command === "episode2") {
+    client.commands.get("episode2").execute(message, args);
+  }
+
+  ///Recent Post Embed
+  if (command === "recentpost") {
+    client.commands.get("recentpost").execute(message, args);
+  }
+
+  ///Recent Posts Embed
   if (command === "recentposts") {
-    let titles = await sf.getNewPostsV2("Starwarsrp", "title");
-    let authors = await sf.getNewPostsV2("Starwarsrp", "author");
-    let postIDs = await sf.getNewPostsV2("Starwarsrp", "postid");
-    let postURLs = await sf.getNewPostsV2("Starwarsrp", "url");
-    let postIcons = await sf.getNewPostsV2("Starwarsrp", "authicon");
-    message.channel.send("**New Posts:** \n===================== ");
-    for (i in titles) {
-      let postBodys = await sf.getPostData("Body", postIDs[i]);
-      const embed = new Discord.MessageEmbed()
-        .setColor(0xff0000)
-        .setImage(
-          "https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png"
-        )
-        .setURL(postURLs[i])
-        .setAuthor(authors[i], postIcons[i])
-        .setTitle(titles[i] + "...")
-        .setDescription(
-          postBodys.slice(0, 1000) +
-            `.....\n [CONTINUE READING ON REDDIT](${postURLs[i]})`
-        )
-        .setFooter(`[SWRP-Media-Bot]`)
-        .setTimestamp();
-      message.channel.send({
-        embeds: [embed],
-      });
-    }
+    client.commands.get("recentposts").execute(message, args);
   }
+
+  ///Recent Comments Embed
   if (command === "recentcomments") {
-    let comments = await sf.getRecentComments("Starwarsrp", "id", 5);
-    for (i in comments) {
-      let commentID = comments[i];
-      let author = await sf.getRecentComments(commentID, "author", 5);
-      let subreddit = await sf.getRecentComments(commentID, "sub", 5);
-      let parentID = await sf.getRecentComments(commentID, "parent", 5);
-      let thread = await sf.getPostData("Title", parentID);
-      let posturl = await sf.getPostData("URL", parentID);
-      let icon = await sf.getRecentComments(commentID, "icon", 5);
-      let body = await sf.getRecentComments(commentID, "body", 5);
-
-      const embed = new Discord.MessageEmbed()
-        .setColor(0x3f5061)
-        .setImage(
-          "https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png"
-        )
-        .setURL(posturl)
-        .setAuthor(author, icon)
-        .setTitle("New Comments have arrived...")
-        .setDescription(
-          `-=-=-=-=-=-=-=-=-=-=-=-=-\n  ${body}  \n-=-=-=-=-=-=-=-=-=-=-=-=-`
-        )
-        .setFooter(`[SWRP-Media-Bot]`)
-        .setTimestamp()
-        .setThumbnail(
-          "https://i.kym-cdn.com/entries/icons/original/000/011/121/SKULL_TRUMPET_0-1_screenshot.png"
-        )
-        .addFields(
-          {
-            name: "Author of Comment: ",
-            value: author,
-            inline: true,
-          },
-          {
-            name: "Read the Post:",
-            value: `[${thread}](${posturl})`,
-            inline: true,
-          },
-          {
-            name: "Subreddit:",
-            value: subreddit,
-            inline: true,
-          }
-        );
-      message.channel.send({
-        embeds: [embed],
-      });
-    }
+    client.commands.get("recentcomments").execute(message, args);
   }
 
-  ////Singular recent comment
+  ////Recent Comment Embed
   if (command === "recentcomment") {
-    let comments = await sf.getRecentComments("Starwarsrp", "id", 1);
-    for (i in comments) {
-      let commentID = comments[i];
-      let author = await sf.getRecentComments(commentID, "author", 1);
-      let subreddit = await sf.getRecentComments(commentID, "sub", 1);
-      let parentID = await sf.getRecentComments(commentID, "parent", 1);
-      let thread = await sf.getPostData("Title", parentID);
-      let posturl = await sf.getPostData("URL", parentID);
-      let icon = await sf.getRecentComments(commentID, "icon", 1);
-      let body = await sf.getRecentComments(commentID, "body", 1);
-      //formatting body and adding properties to the embed
-      let bodyProc = `-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n  ${body}  \n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-`;
-      let rptIssue =
-        "https://github.com/SWRP-GitHub/Reddit-Discord-Bot/issues/new";
-      let footer = "[SWRP-Media-Bot] | ";
-      let issueLink = `[GitHub-Issues](${rptIssue})`;
-      let embedTitle = "New Comments have arrived...";
-      let redditURL = "https://old.reddit.com/r/Starwarsrp/comments/";
-      let redditBannerURL =
-        "https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png";
-      let dootpng =
-        "https://i.kym-cdn.com/entries/icons/original/000/011/121/SKULL_TRUMPET_0-1_screenshot.png";
-      //the embed
-      const embed = new Discord.MessageEmbed()
-        .setColor(0x3f5061)
-        .setImage(redditBannerURL)
-        .setURL(redditURL)
-        .setAuthor(author, icon)
-        .setTitle(embedTitle)
-        .setDescription(bodyProc)
-        .setFooter(footer)
-        .setTimestamp()
-        .setThumbnail(dootpng)
-        .addFields(
-          {
-            name: "Author of Comment: ",
-            value: author,
-            inline: true,
-          },
-          {
-            name: "Read the Post:",
-            value: `[${thread}](${posturl})`,
-            inline: true,
-          },
-          {
-            name: "Subreddit:",
-            value: subreddit,
-            inline: true,
-          }
-        );
-      message.channel.send({
-        embeds: [embed],
-      });
-    }
+    client.commands.get("recentcomment").execute(message, args);
   }
-  if (command === "galaxymap") {
-    const embed = new Discord.MessageEmbed()
-      .setColor(0xf1c232)
-      .setImage(
-        "https://github.com/SWRP-GitHub/SWRP-Website/blob/main/Maps/Capture.PNG?raw=true"
-      )
-      .setURL("https://swrp-media.com/galaxy_map_mobile.html")
-      .setTitle("The Galaxy Map")
-      .setDescription(
-        "GitHub: [Click Here](https://github.com/SWRP-GitHub/SWRP-Website)\nOriginal Map: [Click Here](https://plannedexponent.carto.com/builder/30797a0c-72db-42de-bbec-e9ffc188ec25/embed)"
-      )
-      .setFooter(`[SWRP-Media-Bot]`)
-      .setTimestamp();
-    message.channel.send({
-      embeds: [embed],
-    });
-  }
-  if (command === "commands") {
-    const embed = new Discord.MessageEmbed()
-      .setColor(0xf1c232)
-      .setImage(
-        "https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png"
-      )
-      .setTitle("Command List:")
-      .setDescription(
-        "- `/recentpost` = Will grab the most recently submitted post\n\n- `/recentposts` = Will grab the 3 most recently submitted posts, from newest --> oldest\n\n- `/recentcomment` = Will grab the most recently submitted comment in the subreddit\n\n- `/recentcomments` = Will grab the 5 most recently submitted comments in the subreddit, from newest --> oldest\n\n- `/story` = Will grab the Setting and Story post\n\n- `/episode1` = Will grab the First Episode post\n\n- `/episode2` = Will grab the Second Episode post\n\n-`/galaxymap`= Will grab the galaxy map\n"
-      )
-      .setFooter(`[SWRP-Media-Bot]`)
-      .setTimestamp();
-    message.channel.send({
-      embeds: [embed],
-    });
-  }
-});
 
+  ///Galaxy Map Embed
+  if (command === "galaxymap") {
+    client.commands.get("galaxymap").execute(message, args);
+  }
+
+  ///Command List Embed
+  if (command === "commands") {
+    client.commands.get("commands").execute(message, args);
+  }
+  /////////////////////End of Commands////////////////////////
+});
+////////////////////////End of Message Listener///////////////
+
+///Log the bot into Discord
 client.login(discordConfig.token);
