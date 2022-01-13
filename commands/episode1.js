@@ -26,10 +26,8 @@ module.exports = {
             )
             .setFooter(`[SWRP-Media-Bot]`)
             .setTimestamp();
-      
-          message.channel.send({
-            embeds: [embed],
-          });
+            message.channel.send("<---- **Check the swrp-bot-channel for result**")
+            message.guild.channels.cache.find(channel => channel.name === "swrp-bot-channel").send({embeds: [embed]})
         } catch (e) {
         //ERROR COMMAND HERE
           console.log("something went wrong");
