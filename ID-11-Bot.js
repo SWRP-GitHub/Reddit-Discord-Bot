@@ -74,12 +74,7 @@ client.on("messageCreate", async (message) => {
   //New command to test
   //Once its proved to work here, migrate it to a stand alone JS file and move it to the /commands/ directory
   if (command === "getnewpostlistDNU") {
-    let postTitle = await sf.getNewPosts("title");
-    let postURL = await sf.getNewPosts("url");
-    message.channel.send("**Generating New Post List:** ");
-    for (i in postTitle) {
-      message.channel.send(`**${i}:** ` + postTitle[i] + "\n" + postURL[i]);
-    }
+    
   }
   ////////////////////End of CMD Testing/////////////////
 
