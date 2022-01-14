@@ -16,7 +16,7 @@ const client = new Discord.Client({
 });
 const config = require("./config/config.json");
 const discordConfig = config.discordCreds;
-
+ 
 /////////////Bot Starts Here//////////////////
 client.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
@@ -74,7 +74,7 @@ client.on("messageCreate", async (message) => {
   //New command to test
   //Once its proved to work here, migrate it to a stand alone JS file and move it to the /commands/ directory
   if (command === "getnewpostlistDNU") {
-    
+  
   }
   ////////////////////End of CMD Testing/////////////////
 
