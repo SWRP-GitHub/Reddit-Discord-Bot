@@ -32,27 +32,28 @@ reddit = praw.Reddit(
 )
 auth = reddit.auth.scopes()
 
+
 def word_count(str):
-        counts = dict()
-        words = str.split()
+    counts = dict()
+    words = str.split()
 
-        for word in words:
-            if word in counts:
-                counts[word] += 1
-            else:
-                counts[word] = 1
-
-        return counts
-    
-def word_count_actual(int):
-        counts = dict()
-        for i in counts:
-            counts[i] += 1
+    for word in words:
+        if word in counts:
+            counts[word] += 1
         else:
-            counts[i] = 1
-            
-        return counts
+            counts[word] = 1
 
+    return counts
+
+
+def word_count_actual(int):
+    counts = dict()
+    for i in counts:
+        counts[i] += 1
+    else:
+        counts[i] = 1
+
+    return counts
 
 
 # while {True}:
@@ -63,7 +64,7 @@ def word_count_actual(int):
 #         print(submission.url)
 #         print("-=-=-=-=-=-=-=-=-=-=-=-")
 #         time.sleep(2)
-for submission in reddit.subreddit("Starwarsrp").new(limit=10):
+for submission in reddit.subreddit("Starwarsrp").new(limit=100):
     t = submission.title
     id = submission.id
     a = str(submission.author)
@@ -73,19 +74,4 @@ for submission in reddit.subreddit("Starwarsrp").new(limit=10):
     wc = str(len(word_count(b)))
     wcd = str(word_count(b))
     submission.upvote()
-    file = open('results.txt','a+')
-    file.write('Title: '+ t + '\n')
-    file.write('PostID: '+ id + '\n')
-    file.write('Author: '+ a + '\n')
-    file.write('URL: '+ url + '\n')
-    file.write('BodyText: ' + b + '\n')
-    file.write('Word Count: '+ rawWc + '\n')
-    file.write('unique Word Count: '+ wc + '\n')
-    file.write('Word Count Detail: '+ wcd + '\n')
-    
-    file.close()
-    
-    
-    
-    
-        
+    print("done with this post, moving on")
