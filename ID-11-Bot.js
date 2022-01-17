@@ -15,6 +15,8 @@ const client = new Discord.Client({
   intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_INTEGRATIONS"],
 });
 const config = require("./config/config.json");
+const { resolve } = require("path");
+const { time } = require("console");
 const discordConfig = config.discordCreds;
  
 /////////////Bot Starts Here//////////////////
@@ -73,12 +75,36 @@ client.on("messageCreate", async (message) => {
   /////////////////////CMD TESTING//////////////////////
   //New command to test
   //Once its proved to work here, migrate it to a stand alone JS file and move it to the /commands/ directory
-  if (command === "getnewpostlistDNU") {
-  
-  }
+//   if (command === "testinput") {
+//     let filter = (message) => !message.author.bot;
+//     let options = {
+//       max: 1,
+//       time: 1
+//     };
+//     message.reply('What is your favorite color?');
+
+//     let collector = message.channel.createMessageCollector(filter,options);
+//     collector.checkEnd()
+
+//     // The 'collect' event will fire whenever the collector receives input
+//     collector.on('collect', (m) => {
+//       console.log(`Collected ${m.content}`);
+//     });
+
+//     // The 'end' event will fire when the collector is finished.
+//     collector.on('end', (collected) => {
+//       console.log(`Collected ${collected.size} items`);
+//     });
+
+    
+// }
   ////////////////////End of CMD Testing/////////////////
 
   /////////////////////Commands////////////////////////
+  if (command === "bruh") {
+    client.commands.get("bruhmoment").execute(message, args);
+  }
+
   if (command === "ping") {
     client.commands.get("ping").execute(message, args);
   }

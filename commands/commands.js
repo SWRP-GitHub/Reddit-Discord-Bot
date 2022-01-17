@@ -16,12 +16,12 @@ module.exports = {
           )
           .setTitle("Command List:")
           .setDescription(
-            "- `/recentpost` = Will grab the most recently submitted post\n\n- `/recentposts` = Will grab the 3 most recently submitted posts, from newest --> oldest\n\n- `/recentcomment` = Will grab the most recently submitted comment in the subreddit\n\n- `/recentcomments` = Will grab the 5 most recently submitted comments in the subreddit, from newest --> oldest\n\n- `/story` = Will grab the Setting and Story post\n\n- `/episode1` = Will grab the First Episode post\n\n- `/episode2` = Will grab the Second Episode post\n\n-`/galaxymap`= Will grab the galaxy map\n"
+            "- `/recentpost` = Will grab the most recently submitted post\n\n- `/recentposts` = Will grab the 3 most recently submitted posts, from newest --> oldest\n\n- `/recentcomment` = Will grab the most recently submitted comment in the subreddit\n\n- `/recentcomments` = Will grab the 5 most recently submitted comments in the subreddit, from newest --> oldest\n\n- `/story` = Will grab the Setting and Story post\n\n- `/episode1` = Will grab the First Episode post\n\n- `/episode2` = Will grab the Second Episode post\n\n-`/galaxymap`= Will grab the galaxy map\n\n-`/bruh` = bruh moment"
           )
           .setFooter(`[SWRP-Media-Bot]`)
           .setTimestamp();
           
-          message.guild.channels.cache.find(channel => channel.name === "swrp-bot-channel").send({embeds: [embed]})
+          message.channel.send({embeds: [embed]})
           //message.channel.send({embeds: [embed]});
         } catch (e) {
         //ERROR COMMAND HERE
