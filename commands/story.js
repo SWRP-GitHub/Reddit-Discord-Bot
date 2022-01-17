@@ -27,7 +27,7 @@ module.exports = {
             "https://styles.redditmedia.com/t5_2tg2b/styles/bannerBackgroundImage_065dobtwx9b71.png"
           );
           
-          message.guild.channels.cache.find(channel => channel.name === "swrp-bot-channel").send({embeds: [embed]})
+          message.channel.send({embeds: [embed]})
       } catch (e) {
         console.log("something went wrong");
       }

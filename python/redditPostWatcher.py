@@ -82,9 +82,10 @@ for submission in reddit.subreddit("Starwarsrp").new(limit=10):
     file.write('Word Count: '+ rawWc + '\n')
     file.write('unique Word Count: '+ wc + '\n')
     file.write('Word Count Detail: '+ wcd + '\n')
-    
     file.close()
-    
+    file2 = open('body.txt','a+')
+    file2.write(b)
+    file2.close()
     
     
     
