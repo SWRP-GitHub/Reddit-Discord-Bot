@@ -124,6 +124,11 @@ client.on("messageCreate", async (message) => {
     client.commands.get("episode2").execute(message, args);
   }
 
+  ///Episode 3 Embed
+  if (command === "episode3") {
+    client.commands.get("episode3").execute(message, args);
+  }
+
   ///Recent Post Embed
   if (command === "recentpost") {
     client.commands.get("recentpost").execute(message, args);
