@@ -20,6 +20,19 @@ const r = new snoowrap({
     accessToken: defaultConfig.accessToken
 });
 //////////////////////////////////FUNCTIONS/////////////////////////////////////////
+///Check for file existance
+function doesFileExist(filename,encoding){
+    return fs.readFileSync(filename,encoding)
+}
+
+function convertEpochToSpecificTimezone(timeEpoch, offset){
+    var d = new Date(timeEpoch);
+    var utc = d.getTime() + (d.getTimezoneOffset() * 60000);  //This converts to UTC 00:00
+    var nd = new Date(utc + (3600000*offset));
+    return nd.toLocaleString();
+}
+
+
 
 //Get Hot Posts from SWRP
 async function getHotPosts(input) {
@@ -187,5 +200,7 @@ module.exports = {
     getPostData,
     getNewPosts,
     getNewPostsV2,
-    getRecentComments
+    getRecentComments,
+    doesFileExist,
+    convertEpochToSpecificTimezone
 };

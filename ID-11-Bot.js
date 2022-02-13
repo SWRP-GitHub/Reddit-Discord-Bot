@@ -17,6 +17,8 @@ const client = new Discord.Client({
 const config = require("./config/config.json");
 const { resolve } = require("path");
 const { time } = require("console");
+const { add } = require("nodemon/lib/rules");
+const { stringify } = require("querystring");
 const discordConfig = config.discordCreds;
  
 /////////////Bot Starts Here//////////////////
@@ -61,6 +63,66 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
+
+////////////////////////////////////Logger///////////////////////////////////////////
+var masterChatLogsArry = []
+///////////////////////////////////////////
+client.on("messageCreate", async (message) => {
+  let bulkRawMessage = {
+    server: message.guild.name,
+    serverID: message.guildId,
+    author: message.author.username,
+    authorID: message.author.id,
+    timestamp: sf.convertEpochToSpecificTimezone(message.createdTimestamp,0),
+    channel: message.channel.name,
+    channelID: message.channelId,
+    content: message.content,
+    contentArry: message.content.split(' ')
+  };
+  let messageObj = bulkRawMessage;
+  masterChatLogsArry.push(messageObj);
+
+  fs.writeFile('ServerChatLog.json', JSON.stringify(masterChatLogsArry), "utf8", (err) => {
+    if(err){console.log(`Error parsing ${bulkRawMessage.author}'s message into JSON`)}
+    else{console.log(`Successfully wrote ${bulkRawMessage.author}'s message to the Log`)};
+  });
+});
+//////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////Sij Doot Listener////////////////////////////////
+client.on("messageCreate", async (message) => {
+  if (message.author.bot) return;//filter out bot messages
+  let settings = {
+    mc: message.content.split(' '),//split the message content into an array
+    doot: '<:doot:930786660050927637>',//ID the doot emoji
+    sij: '<@169576509181263872>',//Sij ID
+    malgus: '<@!204831506294767616>',//Malgus ID
+    actuallyMox: '<:actuallymox:900768065778757652>'//Actually Mox ID
+  }
+
+
+  //Array length check
+  //Checks the message array and if its 1 or less will append a filler string at the end of the array
+  if (settings.mc.length <= 1){
+    settings.mc.push('addedSTRING')
+    if (settings.mc[0].includes('<@!')&&settings.mc[1].includes(settings.doot)){
+      console.log('doot detected')
+      message.channel.send(`${settings.malgus} ${settings.actuallyMox} time to read`)
+    }
+    else{}//Do nothing if message not eligible
+  }
+  else{
+    if (settings.mc[0].includes('<@!')&&settings.mc[1].includes(settings.doot)){
+      console.log('im dooting')
+      message.channel.send(`${settings.malgus} ${settings.actuallyMox} time to read`)
+    }
+    else{}//Do nothing if message not eligible
+  }
+});
+
+
+
 ///////////////////////// Message Listener/////////////////////////////
 // Will fire off on any message received by every user in every channel
 client.on("messageCreate", async (message) => {
@@ -71,35 +133,6 @@ client.on("messageCreate", async (message) => {
     .trim()
     .split(/ +/g);
   const command = args.shift().toLowerCase();
-
-  /////////////////////CMD TESTING//////////////////////
-  //New command to test
-  //Once its proved to work here, migrate it to a stand alone JS file and move it to the /commands/ directory
-//   if (command === "testinput") {
-//     let filter = (message) => !message.author.bot;
-//     let options = {
-//       max: 1,
-//       time: 1
-//     };
-//     message.reply('What is your favorite color?');
-
-//     let collector = message.channel.createMessageCollector(filter,options);
-//     collector.checkEnd()
-
-//     // The 'collect' event will fire whenever the collector receives input
-//     collector.on('collect', (m) => {
-//       console.log(`Collected ${m.content}`);
-//     });
-
-//     // The 'end' event will fire when the collector is finished.
-//     collector.on('end', (collected) => {
-//       console.log(`Collected ${collected.size} items`);
-//     });
-
-    
-// }
-  ////////////////////End of CMD Testing/////////////////
-
   /////////////////////Commands////////////////////////
   if (command === "bruh") {
     client.commands.get("bruhmoment").execute(message, args);
@@ -164,3 +197,4 @@ client.on("messageCreate", async (message) => {
 
 ///Log the bot into Discord
 client.login(discordConfig.token);
+
